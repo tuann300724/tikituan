@@ -198,23 +198,40 @@
       if (!selectedProductId) return;
       document.getElementById("loading").style.display = "flex";
 
-      try {
-        const resp = await fetch('https://tiki-ffkp.onrender.com/tiki-create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ product_id: selectedProductId, qty: 1 })
-        });
-        const data = await resp.json();
-        if (data?.tikiData?.redirect_url) {
-          window.location.href = data.tikiData.redirect_url;
-        } else {
-          alert("Không tạo được link thanh toán. Vui lòng thử lại.");
-        }
-      } catch (err) {
-        alert("Lỗi khi tạo thanh toán: " + err.message);
-      } finally {
-        document.getElementById("loading").style.display = "none";
-      }
+     try {
+    document.getElementById("loading").style.display = "block";
+
+    const resp = await fetch('https://tiki-ffkp.onrender.com/tiki-create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ product_id: selectedProductId, qty: 1 })
+    });
+
+    // Check nếu server trả lỗi
+    if (!resp.ok) {
+        const errorData = await resp.json().catch(() => ({}));
+        console.error("Lỗi server:", resp.status, errorData);
+        alert("Server trả lỗi: " + (errorData.error || resp.status));
+        return;
+    }
+
+    // Parse dữ liệu JSON
+    const data = await resp.json();
+    console.log("Response từ server:", data);
+
+    if (data?.tikiData?.redirect_url) {
+        window.location.href = data.tikiData.redirect_url;
+    } else {
+        alert("Không tạo được link thanh toán. Vui lòng thử lại.");
+    }
+
+} catch (err) {
+    console.error("Lỗi fetch:", err);
+    alert("Lỗi khi tạo thanh toán: " + err.message);
+} finally {
+    document.getElementById("loading").style.display = "none";
+}
+
     };
   </script>
 </body>
