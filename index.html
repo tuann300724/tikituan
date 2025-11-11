@@ -201,7 +201,7 @@
      try {
     document.getElementById("loading").style.display = "block";
 
-    const resp = await fetch('https://tiki-ffkp.onrender.com/tiki-create', {
+    const resp = await fetch('http://localhost:3000/tiki-create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ product_id: selectedProductId, qty: 1 })
