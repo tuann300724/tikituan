@@ -157,6 +157,16 @@
     <button onclick="confirmPay(1559413, '50.000đ')">💸 Thanh Toán 50.000đ</button>
     <button onclick="confirmPay(1559417, '100.000đ')">💸 Thanh Toán 100.000đ</button>
     <button onclick="confirmPay(1559583, '200.000đ')">💸 Thanh Toán 200.000đ</button>
+    <button onclick="confirmPay(7321981, '300.000đ')">💸 Thanh Toán 300.000đ</button>
+    <button onclick="confirmPay(7322049, '400.000đ')">💸 Thanh Toán 400.000đ</button>
+    <button onclick="confirmPay(1559587, '500.000đ')">💸 Thanh Toán 500.000đ</button>
+    <button onclick="confirmPay(9672466, '800.000đ')">💸 Thanh Toán 800.000đ</button>
+    <button onclick="confirmPay(1559591, '1.000.000đ')">💸 Thanh Toán 1.000.000đ</button>
+    <button onclick="confirmPay(24376737, '1.500.000đ')">💸 Thanh Toán 1.500.000đ</button>
+    <button onclick="confirmPay(1559595, '2.000.000đ')">💸 Thanh Toán 2.000.000đ</button>
+    <button onclick="confirmPay(1559603, '5.000.000đ')">💸 Thanh Toán 5.000.000đ</button>
+    <button onclick="confirmPay(7322125, '10.000.000đ')">💸 Thanh Toán 10.000.000đ</button>
+
   </div>
 
   <footer>© 2025 Ông Trùm Rút VTS - Bản quyền giữ toàn bộ</footer>
@@ -199,7 +209,7 @@
       document.getElementById("loading").style.display = "flex";
 
      try {
-    document.getElementById("loading").style.display = "block";
+    document.getElementById("loading").style.display = "flex";
 
     const resp = await fetch('http://localhost:3000/tiki-create', {
       method: 'POST',
