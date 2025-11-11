@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="vi">
 <head>
@@ -7,107 +6,107 @@
   <title>Tiki MoMo Pay - Ông Trùm Rút VTS</title>
   <style>
     :root {
-      --main-color: #ff4081;
-      --bg-light: #fff7f9;
-      --text-dark: #222;
+      --main: #ff4081;
+      --main-dark: #e03070;
+      --bg: #fff6f9;
+      --text: #222;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: var(--bg-light);
-      color: var(--text-dark);
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
-      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
     }
+
     header {
       text-align: center;
-      padding: 30px 20px 10px;
+      padding: 40px 15px 20px;
     }
+
     .logo {
       width: 90px;
       height: 90px;
-      background: #eee;
-      border-radius: 50%;
       margin: 0 auto 15px;
-      background-size: cover;
-      background-position: center;
-      /* 🖼️ bạn chỉ cần đổi URL hình logo ở đây */
-    background-image: url('https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-MoMo-Circle.png');
+      border-radius: 50%;
+      background: url('https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-MoMo-Circle.png') center/cover no-repeat;
+      box-shadow: var(--shadow);
     }
-    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+
+    h1 { font-size: 1.6rem; margin: 10px 0 6px; }
     h2 { font-size: 1rem; color: #666; margin: 0 0 25px; }
 
     .illustration {
-      width: 100%;
+      width: 90%;
       max-width: 320px;
       height: 180px;
-      margin: 0 auto 25px;
       border-radius: 16px;
-      background: #f0f0f0;
-      background-size: cover;
-      background-position: center;
-      /* 🖼️ chỗ này bạn chèn hình minh hoạ "ông trùm rút VTS" */
-   background-image: url('https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/503999165_2782095978652295_3148674311317614257_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=t7uAa4gSJcQQ7kNvwHtwhhX&_nc_oc=Adkzmy40pt60nvNpuiSJwcCz1HSO1yxZfCrWeywONtMEpImfl5mvzI8nGjwZfVvpEw7WM74yBzq5tvct7WgZolEN&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=XqYAIRUIaPbYiFbJ23LCBg&oh=00_AfierMg--vz78j7aZq5rMSHZNBq2z-qTNLd7FFHzewitMA&oe=6917C688');
+      background: url('https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/503999165_2782095978652295_3148674311317614257_n.jpg?...') center/cover no-repeat;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
     }
 
     .btn-container {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      width: 100%;
-      max-width: 300px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      width: 90%;
+      max-width: 360px;
       margin-bottom: 40px;
     }
 
     button {
-      padding: 15px 25px;
-      font-size: 1.1rem;
+      background: var(--main);
+      color: #fff;
       font-weight: 600;
+      font-size: 1rem;
+      padding: 12px 14px;
       border: none;
-      border-radius: 12px;
-      background: var(--main-color);
-      color: white;
+      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(255,64,129,0.3);
-      transition: all 0.2s ease;
+      transition: 0.2s;
+      box-shadow: var(--shadow);
     }
-    button:hover { background: #ff5c96; transform: scale(1.03); }
+    button:hover { background: var(--main-dark); transform: scale(1.04); }
 
     footer {
-      font-size: 0.9rem;
-      color: #999;
+      font-size: 0.85rem;
+      color: #888;
       text-align: center;
       margin-top: auto;
-      padding-bottom: 15px;
+      padding: 20px 10px;
     }
 
-    /* Popup xác nhận */
+    /* Popup */
     .popup {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      inset: 0;
+      background: rgba(0,0,0,0.45);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 100;
     }
     .popup-content {
-      background: white;
+      background: #fff;
       padding: 25px;
       border-radius: 12px;
       text-align: center;
       width: 85%;
       max-width: 300px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      box-shadow: var(--shadow);
+      animation: pop 0.25s ease;
     }
-    .popup h3 {
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-    }
+    @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .popup h3 { margin-bottom: 20px; font-size: 1.1rem; }
     .popup button {
       margin: 8px;
       width: 45%;
@@ -117,29 +116,30 @@
     /* Loading overlay */
     .loading {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(255,255,255,0.8);
+      inset: 0;
+      background: rgba(255,255,255,0.9);
       display: none;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       z-index: 200;
-      font-size: 1.2rem;
-      color: var(--main-color);
+      color: var(--main-dark);
       font-weight: 600;
     }
+
     .spinner {
       border: 4px solid #eee;
-      border-top: 4px solid var(--main-color);
+      border-top: 4px solid var(--main);
       border-radius: 50%;
-      width: 40px; height: 40px;
+      width: 40px;
+      height: 40px;
       animation: spin 1s linear infinite;
       margin-bottom: 10px;
     }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
     @media (min-width: 768px) {
-      h1 { font-size: 2rem; }
+      h1 { font-size: 1.9rem; }
       .illustration { height: 220px; }
     }
   </style>
@@ -154,22 +154,21 @@
   <div class="illustration"></div>
 
   <div class="btn-container">
-    <button onclick="confirmPay(1559413, '50.000đ')">💸 Thanh Toán 50.000đ</button>
-    <button onclick="confirmPay(1559417, '100.000đ')">💸 Thanh Toán 100.000đ</button>
-    <button onclick="confirmPay(1559583, '200.000đ')">💸 Thanh Toán 200.000đ</button>
-    <button onclick="confirmPay(7321981, '300.000đ')">💸 Thanh Toán 300.000đ</button>
-    <button onclick="confirmPay(7322049, '400.000đ')">💸 Thanh Toán 400.000đ</button>
-    <button onclick="confirmPay(1559587, '500.000đ')">💸 Thanh Toán 500.000đ</button>
-    <button onclick="confirmPay(9672466, '800.000đ')">💸 Thanh Toán 800.000đ</button>
-    <button onclick="confirmPay(1559591, '1.000.000đ')">💸 Thanh Toán 1.000.000đ</button>
-    <button onclick="confirmPay(24376737, '1.500.000đ')">💸 Thanh Toán 1.500.000đ</button>
-    <button onclick="confirmPay(1559595, '2.000.000đ')">💸 Thanh Toán 2.000.000đ</button>
-    <button onclick="confirmPay(1559603, '5.000.000đ')">💸 Thanh Toán 5.000.000đ</button>
-    <button onclick="confirmPay(7322125, '10.000.000đ')">💸 Thanh Toán 10.000.000đ</button>
-
+    <button onclick="confirmPay(1559413, '50.000đ')">50.000đ</button>
+    <button onclick="confirmPay(1559417, '100.000đ')">100.000đ</button>
+    <button onclick="confirmPay(1559583, '200.000đ')">200.000đ</button>
+    <button onclick="confirmPay(7321981, '300.000đ')">300.000đ</button>
+    <button onclick="confirmPay(7322049, '400.000đ')">400.000đ</button>
+    <button onclick="confirmPay(1559587, '500.000đ')">500.000đ</button>
+    <button onclick="confirmPay(9672466, '800.000đ')">800.000đ</button>
+    <button onclick="confirmPay(1559591, '1.000.000đ')">1.000.000đ</button>
+    <button onclick="confirmPay(24376737, '1.500.000đ')">1.500.000đ</button>
+    <button onclick="confirmPay(1559595, '2.000.000đ')">2.000.000đ</button>
+    <button onclick="confirmPay(1559603, '5.000.000đ')">5.000.000đ</button>
+    <button onclick="confirmPay(7322125, '10.000.000đ')">10.000.000đ</button>
   </div>
 
-  <footer>© 2025 Ông Trùm Rút VTS - Bản quyền giữ toàn bộ</footer>
+  <footer>© 2025 Ông Trùm Rút VTS - Nguyễn Văn Nghị - 0362061339</footer>
 
   <!-- Popup xác nhận -->
   <div class="popup" id="confirmPopup">
@@ -208,40 +207,24 @@
       if (!selectedProductId) return;
       document.getElementById("loading").style.display = "flex";
 
-     try {
-    document.getElementById("loading").style.display = "flex";
+      try {
+        const resp = await fetch('http://localhost:3000/tiki-create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ product_id: selectedProductId, qty: 1 })
+        });
 
-    const resp = await fetch('http://localhost:3000/tiki-create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ product_id: selectedProductId, qty: 1 })
-    });
-
-    // Check nếu server trả lỗi
-    if (!resp.ok) {
-        const errorData = await resp.json().catch(() => ({}));
-        console.error("Lỗi server:", resp.status, errorData);
-        alert("Server trả lỗi: " + (errorData.error || resp.status));
-        return;
-    }
-
-    // Parse dữ liệu JSON
-    const data = await resp.json();
-    console.log("Response từ server:", data);
-
-    if (data?.tikiData?.redirect_url) {
-        window.location.href = data.tikiData.redirect_url;
-    } else {
-        alert("Không tạo được link thanh toán. Vui lòng thử lại.");
-    }
-
-} catch (err) {
-    console.error("Lỗi fetch:", err);
-    alert("Lỗi khi tạo thanh toán: " + err.message);
-} finally {
-    document.getElementById("loading").style.display = "none";
-}
-
+        const data = await resp.json();
+        if (data?.tikiData?.redirect_url) {
+          window.location.href = data.tikiData.redirect_url;
+        } else {
+          alert("Không tạo được link thanh toán. Vui lòng thử lại.");
+        }
+      } catch (err) {
+        alert("Lỗi khi tạo thanh toán: " + err.message);
+      } finally {
+        document.getElementById("loading").style.display = "none";
+      }
     };
   </script>
 </body>
