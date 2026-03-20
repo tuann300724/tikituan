@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "axios": "^1.13.6",
+    "react-app": "^1.1.2"
+  }
+}
