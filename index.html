@@ -115,7 +115,7 @@
 
     <script>
         let quantity = 1;
-        const price = 497500;
+        const price = 200000;
 
         function update() {
             document.getElementById('quantity').innerText = quantity;
@@ -137,6 +137,7 @@
 
             try {
                 const res = await fetch("https://vannghimomo.onrender.com/create-order", {
+                // const res = await fetch("http://localhost:3000/create-order", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
