@@ -100,7 +100,7 @@
             Nếu mua số lượng lớn (ví dụ: 500 × 5 = 1.000.000đ), hãy chọn số lượng trước rồi thanh toán ngay để tránh
             lỗi hết hạn.
         </p>
-        <p class="price"><span id="price"></span> đ</p>
+        <p class="price"><span id="price"></span></p>
 
         <div class="quantity-box">
             <button class="btn-qty" onclick="decrease()">-</button>
@@ -115,11 +115,47 @@
 
     <script>
         let quantity = 1;
-        const price = 500000;
+        let price = 0;
+        let listPrice = 0;
+
+        // load giá từ API
+        async function loadPrice() {
+            try {
+                const res = await fetch("https://vannghimomo.onrender.com/api/card-config");
+                const data = await res.json();
+
+                price = data.price;
+                listPrice = data.list_price;
+
+                update();
+            } catch (err) {
+                document.getElementById('result').innerText =
+                    "❌ Không load được giá";
+            }
+        }
 
         function update() {
             document.getElementById('quantity').innerText = quantity;
-            document.getElementById('price').innerText = (price * quantity).toLocaleString();
+
+            const total = price * quantity;
+            const totalOld = listPrice * quantity;
+
+            // giá hiện tại
+            document.getElementById('price').innerText =
+                total.toLocaleString() + " đ";
+
+            // giá gốc (gạch ngang)
+            let old = document.getElementById('oldPrice');
+            if (!old) {
+                old = document.createElement("div");
+                old.id = "oldPrice";
+  
+                old.style.color = "#999";
+                old.style.marginTop = "5px";
+                document.querySelector(".price").after(old);
+            }
+
+            old.innerText = totalOld.toLocaleString() + " đ";
         }
 
         function increase() {
@@ -137,7 +173,6 @@
 
             try {
                 const res = await fetch("https://vannghimomo.onrender.com/create-order", {
-                // const res = await fetch("http://localhost:3000/create-order", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -146,6 +181,7 @@
                 });
 
                 const data = await res.json();
+
                 if (res.ok && data.redirect_url) {
                     window.location.href = data.redirect_url;
                     return;
@@ -154,20 +190,21 @@
                 let message = "❌ Có lỗi xảy ra";
 
                 if (res.status === 401) {
-                    message = "❌ Thanh toán thất bại: Link hết hạn hoặc không hợp lệ";
+                    message = "❌ Link thanh toán đã hết hạn";
                 } else if (res.status === 500) {
-                    message = "❌ Server lỗi, thử lại sau";
+                    message = "❌ Server lỗi";
                 }
 
                 document.getElementById('result').innerText = message;
+
             } catch (err) {
                 document.getElementById('result').innerText =
-                    "Lỗi: " + err.message;
+                    "❌ Lỗi: " + err.message;
             }
         }
 
-
-        update();
+        // load khi mở trang
+        loadPrice();
     </script>
 
 </body>
