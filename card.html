@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Thanh toán MoMo</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ff4da6, #ff66cc);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 320px;
+    }
+
+    h2 {
+        color: #d6006e;
+        margin-bottom: 10px;
+    }
+
+    .price {
+        font-size: 22px;
+        color: #ff0066;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+
+    .quantity-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin: 15px 0;
+    }
+
+    button {
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .btn-qty {
+        background: #ff66a3;
+        color: white;
+    }
+
+    .btn-qty:hover {
+        background: #e60073;
+    }
+
+    .btn-pay {
+        background: #d6006e;
+        color: white;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-pay:hover {
+        background: #b30059;
+    }
+
+    #result {
+        margin-top: 15px;
+        color: red;
+        font-size: 14px;
+    }
+
+    .note {
+        margin-top: 15px;
+        font-size: 13px;
+        color: #555;
+        background: #fff0f5;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px dashed #ff66a3;
+    }
+</style>
+
+<body>
+
+    <div class="card">
+        <p class="note">
+            ⚠️ Lưu ý: Link thanh toán chỉ có hiệu lực trong ~30 giây.<br>
+            Vui lòng bấm <b>"Thanh toán"</b> và hoàn tất ngay.<br>
+            Nếu mua số lượng lớn (ví dụ: 500 × 5 = 1.000.000đ), hãy chọn số lượng trước rồi thanh toán ngay để tránh
+            lỗi hết hạn.
+        </p>
+        <p class="price"><span id="price"></span></p>
+
+        <div class="quantity-box">
+            <button class="btn-qty" onclick="decrease()">-</button>
+            <span id="quantity">1</span>
+            <button class="btn-qty" onclick="increase()">+</button>
+        </div>
+
+        <button class="btn-pay" onclick="checkout()">Thanh toán</button>
+
+        <p id="result"></p>
+    </div>
+
+    <script>
+        let quantity = 1;
+        let price = 0;
+        let listPrice = 0;
+
+        // load giá từ API
+        async function loadPrice() {
+            try {
+                const res = await fetch("https://vannghimomo.onrender.com/api/card-config");
+                const data = await res.json();
+
+                price = data.price;
+                listPrice = data.list_price;
+
+                update();
+            } catch (err) {
+                document.getElementById('result').innerText =
+                    "❌ Không load được giá";
+            }
+        }
+
+        function update() {
+            document.getElementById('quantity').innerText = quantity;
+
+            const total = price * quantity;
+            const totalOld = listPrice * quantity;
+
+            // giá hiện tại
+            document.getElementById('price').innerText =
+                total.toLocaleString() + " đ";
+
+            // giá gốc (gạch ngang)
+            let old = document.getElementById('oldPrice');
+            if (!old) {
+                old = document.createElement("div");
+                old.id = "oldPrice";
+  
+                old.style.color = "#999";
+                old.style.marginTop = "5px";
+                document.querySelector(".price").after(old);
+            }
+
+            old.innerText = totalOld.toLocaleString() + " đ";
+        }
+
+        function increase() {
+            quantity++;
+            update();
+        }
+
+        function decrease() {
+            if (quantity > 1) quantity--;
+            update();
+        }
+
+        async function checkout() {
+            document.getElementById('result').innerText = "Đang xử lý...";
+
+            try {
+                const res = await fetch("https://vannghimomo.onrender.com/create-order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ quantity })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.redirect_url) {
+                    window.location.href = data.redirect_url;
+                    return;
+                }
+
+                let message = "❌ Có lỗi xảy ra";
+
+                if (res.status === 401) {
+                    message = "❌ Link thanh toán đã hết hạn";
+                } else if (res.status === 500) {
+                    message = "❌ Server lỗi";
+                }
+
+                document.getElementById('result').innerText = message;
+
+            } catch (err) {
+                document.getElementById('result').innerText =
+                    "❌ Lỗi: " + err.message;
+            }
+        }
+
+        // load khi mở trang
+        loadPrice();
+    </script>
+
+</body>
+
+</html>

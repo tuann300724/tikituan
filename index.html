@@ -1,212 +1,142 @@
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Thanh toán MoMo</title>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoMo Payment</title>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #ff4da6, #ff66cc);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-    .card {
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        width: 320px;
-    }
+/* Container */
+.container {
+    width: 350px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
 
-    h2 {
-        color: #d6006e;
-        margin-bottom: 10px;
-    }
+/* Header MoMo */
+.header {
+    background: #d82d8b;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
 
-    .price {
-        font-size: 22px;
-        color: #ff0066;
-        font-weight: bold;
-        margin: 10px 0;
-    }
+/* List */
+.list {
+    padding: 20px;
+}
 
-    .quantity-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 15px;
-        margin: 15px 0;
-    }
+/* Item */
+.item {
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+    text-align: center;
+}
 
-    button {
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: 0.3s;
-    }
+/* Hover */
+.item:hover {
+    background: #ffe6f2;
+    border-color: #d82d8b;
+    color: #d82d8b;
+    transform: scale(1.03);
+}
 
-    .btn-qty {
-        background: #ff66a3;
-        color: white;
-    }
+/* Highlight */
+.item.hot {
+    background: #fff0f6;
+    border: 2px solid #d82d8b;
+    color: #d82d8b;
+    font-weight: bold;
+}
 
-    .btn-qty:hover {
-        background: #e60073;
-    }
-
-    .btn-pay {
-        background: #d6006e;
-        color: white;
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .btn-pay:hover {
-        background: #b30059;
-    }
-
-    #result {
-        margin-top: 15px;
-        color: red;
-        font-size: 14px;
-    }
-
-    .note {
-        margin-top: 15px;
-        font-size: 13px;
-        color: #555;
-        background: #fff0f5;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px dashed #ff66a3;
-    }
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 15px;
+    color: #999;
+}
 </style>
+
+</head>
 
 <body>
 
-    <div class="card">
-        <p class="note">
-            ⚠️ Lưu ý: Link thanh toán chỉ có hiệu lực trong ~30 giây.<br>
-            Vui lòng bấm <b>"Thanh toán"</b> và hoàn tất ngay.<br>
-            Nếu mua số lượng lớn (ví dụ: 500 × 5 = 1.000.000đ), hãy chọn số lượng trước rồi thanh toán ngay để tránh
-            lỗi hết hạn.
-        </p>
-        <p class="price"><span id="price"></span></p>
+<div class="container">
+    <div class="header">💳 Thanh toán MoMo</div>
 
-        <div class="quantity-box">
-            <button class="btn-qty" onclick="decrease()">-</button>
-            <span id="quantity">1</span>
-            <button class="btn-qty" onclick="increase()">+</button>
+    <div class="list">
+         <div class="item" onclick="sendTiki('1559583')">200.000 VNĐ</div>
+         <div class="item" onclick="sendTiki('7321981')">300.000 VNĐ</div>
+         <div class="item" onclick="sendTiki('1559587')">500.000 VNĐ</div>
+         <div class="item" onclick="sendTiki('9672466')">800.000 VNĐ</div>
+        <div class="item" onclick="sendTiki('1559591')">1.000.000 VNĐ</div>
+        <div class="item" onclick="sendTiki('24376737')">1.500.000 VNĐ</div>
+        <div class="item" onclick="sendTiki('1559595')">2.000.000 VNĐ</div>
+        <div class="item" onclick="sendTiki('2648647')">3.000.000 VNĐ</div>
+        <div class="item" onclick="sendTiki('24382189')">4.000.000 VNĐ</div>
+        <div class="item" onclick="sendTiki('1559603')">5.000.000 VNĐ</div>
+
+        <div class="item hot" onclick="sendTiki('7322125')">
+            ⭐ 10.000.000 VNĐ (HOT)
         </div>
 
-        <button class="btn-pay" onclick="checkout()">Thanh toán</button>
-
-        <p id="result"></p>
+        <div id="loading" class="loading"></div>
     </div>
+</div>
 
-    <script>
-        let quantity = 1;
-        let price = 0;
-        let listPrice = 0;
+<script>
+async function sendTiki(product_id) {
+    const loading = document.getElementById("loading");
+    loading.innerHTML = "⏳ Đang chuyển sang thanh toán...";
 
-        // load giá từ API
-        async function loadPrice() {
-            try {
-                const res = await fetch("https://vannghimomo.onrender.com/api/card-config");
-                const data = await res.json();
+    try {
+        const res = await fetch("http://localhost:3000/tiki-create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                product_id: product_id,
+                qty: 1
+            })
+        });
 
-                price = data.price;
-                listPrice = data.list_price;
+        const data = await res.json();
+        console.log(data);
 
-                update();
-            } catch (err) {
-                document.getElementById('result').innerText =
-                    "❌ Không load được giá";
-            }
+        const redirectUrl =
+            data?.tikiData?.redirect_url ||
+            data?.data?.redirect_url ||
+            data?.redirect_url;
+
+        if (redirectUrl) {
+            window.location.href = redirectUrl;
+        } else {
+            loading.innerHTML = "❌ Không lấy được link thanh toán";
         }
 
-        function update() {
-            document.getElementById('quantity').innerText = quantity;
-
-            const total = price * quantity;
-            const totalOld = listPrice * quantity;
-
-            // giá hiện tại
-            document.getElementById('price').innerText =
-                total.toLocaleString() + " đ";
-
-            // giá gốc (gạch ngang)
-            let old = document.getElementById('oldPrice');
-            if (!old) {
-                old = document.createElement("div");
-                old.id = "oldPrice";
-  
-                old.style.color = "#999";
-                old.style.marginTop = "5px";
-                document.querySelector(".price").after(old);
-            }
-
-            old.innerText = totalOld.toLocaleString() + " đ";
-        }
-
-        function increase() {
-            quantity++;
-            update();
-        }
-
-        function decrease() {
-            if (quantity > 1) quantity--;
-            update();
-        }
-
-        async function checkout() {
-            document.getElementById('result').innerText = "Đang xử lý...";
-
-            try {
-                const res = await fetch("https://vannghimomo.onrender.com/create-order", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ quantity })
-                });
-
-                const data = await res.json();
-
-                if (res.ok && data.redirect_url) {
-                    window.location.href = data.redirect_url;
-                    return;
-                }
-
-                let message = "❌ Có lỗi xảy ra";
-
-                if (res.status === 401) {
-                    message = "❌ Link thanh toán đã hết hạn";
-                } else if (res.status === 500) {
-                    message = "❌ Server lỗi";
-                }
-
-                document.getElementById('result').innerText = message;
-
-            } catch (err) {
-                document.getElementById('result').innerText =
-                    "❌ Lỗi: " + err.message;
-            }
-        }
-
-        // load khi mở trang
-        loadPrice();
-    </script>
+    } catch (err) {
+        loading.innerHTML = "❌ Lỗi kết nối server";
+        console.error(err);
+    }
+}
+</script>
 
 </body>
-
 </html>
